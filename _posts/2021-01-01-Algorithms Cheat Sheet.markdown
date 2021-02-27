@@ -37,7 +37,7 @@ Template function
 
 ```c++
 template typename<T> void selfMax(T &a, T b) {
-	a = max(a, b); //<- provided max already implements the input templates
+    a = max(a, b); //<- provided max already implements the input templates
 }
 ```
 
@@ -99,10 +99,10 @@ Binomial coefficients (N choose k)   n k   = n!(n-k)!k! for 0kn; 0 otherwise 0! 
 
 ```c++
 int nCk(int n, int k){
-	if(k<0 || k>n) return 0;
-	int numerator = factorial(n, n-k);
-	int denominator = factorial(k);
-	return numerator/denominator ;
+    if(k<0 || k>n) return 0;
+    int numerator = factorial(n, n-k);
+    int denominator = factorial(k);
+    return numerator/denominator ;
 }
 ```
 
@@ -250,7 +250,7 @@ TreeNode* deleteNode(TreeNode* root, int key){
         return NULL;
     
     if(root->val > key)      
-    	root->left = deleteNode(root->left, key); 
+        root->left = deleteNode(root->left, key); 
     
     else if(root->val < key)      
         root->right = deleteNode(root->right, key);  
@@ -274,8 +274,8 @@ TreeNode* deleteNode(TreeNode* root, int key){
             delete root;        
             root = NULL;      
         }    
-	}    
-	return root;  
+    }    
+    return root;  
 }
 ```
 <u>C++ Container</u>
@@ -317,9 +317,9 @@ pair<int, int> depthAndDiameter(Node* root) {
     pair<int, int> right = depthAndDiameter(root->right);
     
     int maxdiameter = max({left.second, right.second, left.first+right.first+1});  
-	int maxdepth = max(left.first, right.first)+1;
+    int maxdepth = max(left.first, right.first)+1;
 
-	return {maxdepth , maxdiameter};
+    return {maxdepth , maxdiameter};
 }
 ```
 
@@ -332,8 +332,8 @@ Uses: Finding words, validating words(typos)
 ```c++
 
 class Trie {
-	unordered_map<char, Trie*> children;
-	boolean isCompleteWord;void addWord(string word) {
+    unordered_map<char, Trie*> children;
+    boolean isCompleteWord;void addWord(string word) {
         Trie*current = this;
         for(int i = 0; i<word.size(); i++){
             char c = word[i];
@@ -395,8 +395,8 @@ Credit [William Fiset][williamfisetyoutube]
 
 ```c++
 vector<int> kahnsort(vector<vector<int>> &graph) {
-	vector<int> indegree(graph.size());
-	for(vector<int> n : graph) {
+    vector<int> indegree(graph.size());
+    for(vector<int> n : graph) {
         for(int v : n)
             indegree[v]++; 
     }
@@ -417,7 +417,7 @@ vector<int> kahnsort(vector<vector<int>> &graph) {
         }
     }
     if(sorted.size() != graph.size()) // cycle/no topological order
-    	return vector<int>();
+        return vector<int>();
     
     return sorted;
 }
@@ -435,7 +435,7 @@ unordered_map<int, int> size; //union by size
 unordered_map<int, int> ranks; //union by rank (attach the shorter tree to the root of the taller tree)
 
 void make_set(const vector<int> &vertics) {
-	for(int i : vertices) {
+    for(int i : vertices) {
         parents[i]=i;
         size[i]=1;   
     }
@@ -493,11 +493,11 @@ while(!q.empty()) {
         continue;
     visited.insert(curr.second);
     
-	totalCost += curr.first;
+    totalCost += curr.first;
     for(auto& adj: graph[curr.second]){
         if(visited.find(adj.second)!=visited.end()) continue;
-    		q.push(adj);
-	}
+            q.push(adj);
+    }
 }
 ```
 
@@ -516,7 +516,7 @@ void dfs(vector<vector<int>> &adj, vector<int>VerticesSet){
     vector<bool> finished(VerticesSet.size(), false); 
     //optional start time vector used to detect cross edges
     vector<int> startTime(VerticesSet.size()); //TODO
-	//loop to visit all vertices
+    //loop to visit all vertices
     for(int s : VerticesSet){
        if(!parent[s]){
         parent[s]=true; 
@@ -540,14 +540,14 @@ Recursive call. Can be made to return a bool value if we are checking //cycles. 
             if(!dfs_visit(adj, v, parent, finished))
                return false for cycles;
         }
- 	//Node is visited and finished = forward edge or cross edge  
+     //Node is visited and finished = forward edge or cross edge  
     //An edge(s,v) is a cross edge, if startTime[s]>startTime[v]. 
     else if(finished[v])
-    	/*optional do something*/
+        /*optional do something*/
     //Node is visited but not finished = backward edge (cycle)
     else if(!finished[v] && /* parent[v] != vertex for undirected graphs */)
-    	/*optional do something*/
-	}
+        /*optional do something*/
+    }
     finished[s] = true;
     return true;
 }
@@ -755,8 +755,8 @@ void permute(vector<int> &num, int start, vector<vector<int> > &result) {
     if (start == num.size() - 1) {
         result.push_back(num);
         return;
-	} 
-	for(int i = start; i < num.size(); i++) {
+    } 
+    for(int i = start; i < num.size(); i++) {
         swap(num[start], num[i]);
         permute(num, start + 1, result);
         swap(num[start], num[i]);
@@ -767,7 +767,7 @@ void permute(vector<int>& nums, vector<int> &curr, vector<vector<int>> &result) 
     if (curr.size()==nums.size()) {
         result.push_back(curr);
         return ;
-	}
+    }
     for (int i=0;i<nums.size();i++){
         curr.push_back(nums[i]);
         int temp = nums[i];
@@ -780,7 +780,7 @@ void permute(vector<int>& nums, vector<int> &curr, vector<vector<int>> &result) 
 //Variant 3 (using std::next_permutation)
 sort(A.begin(), A.end()); //must be sorted in the beginning, otherwise permutations are missing
     do {
-    	result.push_back(A);
+        result.push_back(A);
     } 
     while (next_permutation(A.begin(), A.end()));
 ```
@@ -792,9 +792,9 @@ Convert regular factorial function to tail recursive function:
 
 ```c++
 int factorialRecursive(int n) {
-	if(n == 0) 
+    if(n == 0) 
         return 1;
-	return n * factorialRecursive(n-1); //needs the return to compute the result 
+    return n * factorialRecursive(n-1); //needs the return to compute the result 
 }
 
 int factorialTailRecursive(int n, int result) {
@@ -813,12 +813,12 @@ Would it help to solve backwards?
 
 Solution approach/steps: 
 
-- Define subproblems (suffixes, prefixes, substrings) --> # subproblem	
+- Define subproblems (suffixes, prefixes, substrings) --> # subproblem    
 - Define the states (DP(i), DP(i,j), etc..
 - Define initialization
 - Define goal state
-- Guess part of the solution 	--> # guesses
-- Recurrence	(solution for subproblem) --> (time per subproblem)
+- Guess part of the solution     --> # guesses
+- Recurrence    (solution for subproblem) --> (time per subproblem)
 - Recurse & memoize or bottom up topological order (DAG)
   --> time = #subproblem * time per subproblem
 - Solve original problem --> complete function (min/max formula)
@@ -830,7 +830,7 @@ Solution approach/steps:
 <u>Strings, sequences:</u>
 
 - 2D matrix with the input as rows and cols headers
-  - wild card matching	
+  - wild card matching    
   - edit distance /levenstein algorithm 
   - longest common subsequence
 
@@ -854,7 +854,7 @@ Solution approach/steps:
 - Given an array of items as input, and a maximum capacity, optimize which items to pick.
 - Unbounded Knapsack problem = coin change 2
 - Suffix problems: Perfect information (Black jack)
-  Given a deck of cards, stocks prices,... optimize solution.	
+  Given a deck of cards, stocks prices,... optimize solution.    
   Blackjack: maximize winnings given constraints (rules of the game for dealer, player)
 - Buy-sell stocks: maximize winnings given certain constraints (buy and sell only once, several time, transaction fees, cooldown period)
 - Text justification: given a list of words and maximum line size, split into good lines (optimize text justification). Given penalty for spaces per line. 
@@ -898,7 +898,7 @@ int strstr(string A, string B) {
     int i=prev_start;
     int j=0;
     while(i<A.size() && j<B.size()) {
-	   start = tempstart;
+       start = tempstart;
         if(A[i]==B[j]) {
             i++;
             j++;
