@@ -1,5 +1,6 @@
 ---
 layout: post
+comments: true
 title:  "Discord Bot with XML parsing"
 categories: Python
 ---
