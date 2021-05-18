@@ -164,6 +164,27 @@ Solution: XOR will return 1 only on two different bits. So if two numbers are th
 | x \| ~(x + 1) =         | extracts the lowest cleared bit of x (all others are set).   |
 | x \| (x - (1 << n)) = x | with the run of cleared bits (possibly length 0) starting at bit n set. |
 | x \| ~(x - (1 << n)) =  | the lowest run of cleared bits (possibly length 0) in x, starting at bit n are the only clear bits. |
+|   
+
+from (florian.github.io/xor-trick):
+In-place swapping:
+```c++
+ x ^= y
+ y ^= x
+ x ^= y
+```
+Find missing number:
+```c++
+    missing = 0;
+    //xor all numbers in range
+    for(int i=1; i<n; i++)
+        missing ^= i;
+        
+    //xor with all numbers in input array
+    for(int v : input)
+        missing ^= v;
+    return missing;
+```
 
 
 
@@ -255,7 +276,8 @@ TreeNode* deleteNode(TreeNode* root, int key){
     else if(root->val < key)      
         root->right = deleteNode(root->right, key);  
 
-    else //root->val == key {      
+    //root->val == key
+    else {      
         if(root->left && root->right){        
             TreeNode* toDelete = findMinimum(root->right); 
             //or find maximum in left subtree         
@@ -391,7 +413,6 @@ Credit [William Fiset][williamfisetyoutube]
 - Remove the vertex from the graph and add it to the topological sorted array (vector<int> sorted);
 - When a vertex is removed, remove one indegree from all it's dependent nodes, add them to the queue if indegree is zero.
 - Continue until the queue is empty. If the graph has a cycle, the array of indegree will have some vertices with indegrees > 0
-  
 
 ```c++
 vector<int> kahnsort(vector<vector<int>> &graph) {
@@ -746,45 +767,6 @@ void recurse(vector<T> &solution, T &vec, vector<T> &input, int index, const vec
 }
 ```
 
-Example permutation function:
-Given a collection of numbers, return all possible permutations.
-
-```c++
-//Variant 1 
-void permute(vector<int> &num, int start, vector<vector<int> > &result) {
-    if (start == num.size() - 1) {
-        result.push_back(num);
-        return;
-    } 
-    for(int i = start; i < num.size(); i++) {
-        swap(num[start], num[i]);
-        permute(num, start + 1, result);
-        swap(num[start], num[i]);
-    }
-}
-//Variant 2
-void permute(vector<int>& nums, vector<int> &curr, vector<vector<int>> &result) {
-    if (curr.size()==nums.size()) {
-        result.push_back(curr);
-        return ;
-    }
-    for (int i=0;i<nums.size();i++){
-        curr.push_back(nums[i]);
-        int temp = nums[i];
-        nums[i] = INT_MAX;
-        permute(nums,curr, result);
-        nums[i] = temp;
-        curr.pop_back(); 
-    }
-}
-//Variant 3 (using std::next_permutation)
-sort(A.begin(), A.end()); //must be sorted in the beginning, otherwise permutations are missing
-    do {
-        result.push_back(A);
-    } 
-    while (next_permutation(A.begin(), A.end()));
-```
-
 ### Tail Recursion
 
 When the recursion is the last call in the function. Benefit: compiler optimization. 
@@ -888,8 +870,8 @@ Solution approach/steps:
 
 ## Strings
 
-KMP Algorithm (find substring index)
-Knuth Morris Pratt
+**KMP Algorithm (find substring index)**
+<u>Knuth-Morris-Pratt</u>
 If string B is substring of A, return starting index of substring
 
 ```c++
@@ -914,7 +896,48 @@ int strstr(string A, string B) {
 }
 ```
 
+**RABIN-KARP Algorithm** 
 
+Optimized string matching using rolling hashes
+
+The idea is to match a pattern with a window in the string (of pattern length) by comparing their hash values. Then only compare the characters if the hash value is the same. To be faster than brute force comparison, the hash code of the window should be calculated efficiently (in constant time instead of pattern length linear time). 
+
+Rolling hash simple example for hashing digits (0-9)
+H = c1 * a^m-1 + c2 * a^m-2 + ... + cm * a^0
+m = 3 (pattern length)
+a = a constant, here we are using 10, but  it's typically chosen as a power of 2
+c = code of the character - here we will use the value of the digit
+
+Find the followiing pattern in the given string s: 
+string pattern = "456", string s = "937456"
+
+pattern_hash = H("456") =code("4") * 10^2 + code("5") * 10^1 + doce("6") * 10^0 = 456
+
+H("937") = code("9") * 10^2 + code("3") * 10^1 + code("7") * 10^0 = 937
+H("374") = (hash("937") -  code("9")*10^2) * 10 + 4 = (937-900) * 10^2  + 4 = 37 * 100 + 4 = 374
+...
+
+H("456") = hash("745")  - code("7") * 10^2 + 6 = 456
+
+
+pattern hash equals the window hash, now we can compare the individual characters of the pattern and the window in linear time (of pattern length)
+
+```pseudocode
+function RabinKarp(string s[1..n], string pattern[1..m])
+    hpattern := hash(pattern[1..m]);
+    for i from 1 to n-m+1
+        hs := hash(s[i..i+m-1])
+        if hs = hpattern
+            if s[i..i+m-1] = pattern[1..m]
+                return i
+    return not found
+```
+Time complexity in detail:
+hashing pattern : O(m), where m = pattern length
+loop : O(n-m+1) = O(n)  where n = length of string
+window hashing : O(1) with rolling hashing, O(m) with a naive hashing
+comparision (hs=hpattern): O(m), should happen on
+Total time = O(n+m) with good hashing, O(nm) if the window hash matches every time 
 
 ## Sorting Algorithms
 
@@ -950,9 +973,7 @@ void bucketSort(float arr[], int n) {
 
 ## TODO:
 
-- Randomized algorithms & probability
-- Strings: 
-  - RABIN-KARP Algorithm for string matching (plagiarism detection)
+- Randomized algorithms & probability 
 - Graphs:
   - Working with graphs(not just adjacency graph, but also different representations)
   - Paths(dijkstra, A*, bellman ford, Floyed-Warshall)
