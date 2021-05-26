@@ -525,7 +525,7 @@ while(!q.empty()) {
 
 #### DFS Depth first search graph traversal
 
-Space: AdjList O(V+E) AdjMat O(V^2) - Time: O(V)
+Space: O(V) - Time: O(V+E)
 Main dfs function that calls every vertex in the set (in case of an unconnected vertex)
 
 ```c++
@@ -577,7 +577,7 @@ Recursive call. Can be made to return a bool value if we are checking //cycles. 
 
 #### BFS Breadth first search graph traversal 
 
-Space: AdjList O(V+E) AdjMat O(V^2) - Time: O(V)
+Space: O(V) - Time: O(V+E)
 
 Shortest Path BFS. 
 //s is starting node. t is destination node
