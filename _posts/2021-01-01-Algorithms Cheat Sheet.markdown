@@ -125,7 +125,7 @@ log_b(c) = 1 / log_c(b)
 Change base rule : 
 log_b(x) = log_c(x) / log_c(b)
 
-#### Bit manipulation
+#### Bit manipulation and bitsets
 
 Check if a number is even
 
@@ -185,8 +185,12 @@ Find missing number:
         missing ^= v;
     return missing;
 ```
-
-
+Bitset
+Find intersection between two bitsets
+```
+bitset<30> x[2];
+int intersection(int i, int j) { return (x[i] & x[j]).count(); }
+```
 
 ## Trees
 
@@ -355,17 +359,40 @@ Uses: Finding words, validating words(typos)
 
 class Trie {
     unordered_map<char, Trie*> children;
-    boolean isCompleteWord;void addWord(string word) {
-        Trie*current = this;
+    boolean isCompleteWord = false;
+    void addWord(string word) {
+        Trie* current = this;
         for(int i = 0; i<word.size(); i++){
             char c = word[i];
             if(current->children.find(c) == current->children.end() ) {
-                Trie*n = new Trie();
+                Trie* n = new Trie();
                 current->children.insert({c, n});
             }
             current = current->children[c];
             if(i == word.size()-1)
                 current->complete = true;
+        }
+        bool hasWord(string word)
+        {
+            Trie* current = this;
+            for (char c : word)
+            {
+                if (current->children.find(c) == current->children.end())
+                    return false;
+                current = current->children[c];
+            }
+            return current->isCompleteWord;
+        }
+        bool hasPrefix(string pref)
+        {
+            Trie* current = this;
+            for (char c : pref)
+            {
+                if (current->children.find(c) == current->children.end())
+                    return false;
+                current = current->children[c];
+            }
+            return true;
         }
     }
 }
